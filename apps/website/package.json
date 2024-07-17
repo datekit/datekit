@@ -1,9 +1,9 @@
 {
-  "name": "@datekit/docs",
+  "name": "@datekit/website",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3010",
+    "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

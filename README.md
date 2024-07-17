@@ -17,10 +17,10 @@ This Turborepo includes the following:
 ### Apps and Packages
 
 - `docs`: A placeholder documentation site powered by [Next.js](https://nextjs.org/)
-- `@acme/core`: core React components
-- `@acme/utils`: shared React utilities
-- `@acme/tsconfig`: shared `tsconfig.json`s used throughout the monorepo
-- `@acme/eslint-config`: ESLint preset
+- `@datekit/core`: core React components
+- `@datekit/utils`: shared React utilities
+- `@datekit/typescript-config`: shared `tsconfig.json`s used throughout the monorepo
+- `@datekit/eslint-config`: ESLint preset
 
 Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
 
@@ -34,19 +34,11 @@ This Turborepo has some additional tools already setup for you:
 
 ### Useful commands
 
-- `yarn build` - Build all packages and the docs site
-- `yarn dev` - Develop all packages and the docs site
-- `yarn lint` - Lint all packages
-- `yarn changeset` - Generate a changeset
-- `yarn clean` - Clean up all `node_modules` and `dist` folders (runs each package's clean script)
-
-### Changing the npm organization scope
-
-The npm organization scope for this design system starter is `@acme`. To change this, it's a bit manual at the moment, but you'll need to do the following:
-
-- Rename folders in `packages/*` to replace `acme` with your desired scope
-- Search and replace `acme` with your desired scope
-- Re-run `yarn install`
+- `npm run build` - Build all packages and the docs site
+- `npm run dev` - Develop all packages and the docs site
+- `npm run lint` - Lint all packages
+- `npm run changeset` - Generate a changeset
+- `npm run clean` - Clean up all `node_modules` and `dist` folders (runs each package's clean script)
 
 ## Versioning and Publishing packages
 
