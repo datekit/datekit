@@ -1,6 +1,6 @@
-# Turborepo Design System starter with Changesets
+# Datekit
 
-This is an official React design system starter powered by Turborepo. Versioning and package publishing is handled by [Changesets](https://github.com/changesets/changesets) and fully automated with GitHub Actions.
+Beautiful calendar components for React/Next.js, built with Tailwind CSS & Day.js.
 
 ## Using this example
 
@@ -12,14 +12,15 @@ npx create-turbo@latest -e with-changesets
 
 ## What's inside?
 
-This Turborepo includes the following:
+This repo includes the following:
 
 ### Apps and Packages
 
-- `docs`: A placeholder documentation site powered by [Next.js](https://nextjs.org/)
-- `@datekit/core`: core React components
-- `@datekit/utils`: shared React utilities
-- `@datekit/typescript-config`: shared `tsconfig.json`s used throughout the monorepo
+- `@datekit/docs`: Documentation site powered by [Next.js](https://nextjs.org/)
+- `@datekit/website`: Main website powered by [Next.js](https://nextjs.org/)
+- `@datekit/core`: Datekit core components
+- `@datekit/utils`: Datekit shared utilities
+- `@datekit/typescript-config`: TypeScript preset
 - `@datekit/eslint-config`: ESLint preset
 
 Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
@@ -34,8 +35,8 @@ This Turborepo has some additional tools already setup for you:
 
 ### Useful commands
 
-- `npm run build` - Build all packages and the docs site
-- `npm run dev` - Develop all packages and the docs site
+- `npm run build` - Build all packages and both the website and the docs site
+- `npm run dev` - Develop all packages and both the website and the docs site
 - `npm run lint` - Lint all packages
 - `npm run changeset` - Generate a changeset
 - `npm run clean` - Clean up all `node_modules` and `dist` folders (runs each package's clean script)
