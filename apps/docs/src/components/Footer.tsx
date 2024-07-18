@@ -101,14 +101,15 @@ function SocialLink({
   href,
   icon: Icon,
   children,
-  ...rest
+  title,
 }: {
   href: string
   icon: React.ComponentType<{ className?: string }>
-  children: React.ReactNode
+  children: React.ReactNode,
+  title?: string
 }) {
   return (
-    <Link href={href} className="group" {...rest}>
+    <Link href={href} className="group" title={title}>
       <span className="sr-only">{children}</span>
       <Icon className="h-5 w-5 fill-stone-700 transition group-hover:fill-stone-900 dark:group-hover:fill-stone-500" />
     </Link>
