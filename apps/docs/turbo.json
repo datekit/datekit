@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "//"
+  ],
+  "tasks": {
+    "build": {
+      "passThroughEnv": [
+        "NEXT_PUBLIC_WEBSITE_URL"
+      ]
+    }
+  }
+}

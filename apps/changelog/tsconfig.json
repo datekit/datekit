@@ -1,0 +1,26 @@
+{
+  "exclude": [
+    "node_modules"
+  ],
+  "extends": "@datekit/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [ "./src/*" ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "types/global.d.ts",
+    "next.config.mjs",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ]
+}
