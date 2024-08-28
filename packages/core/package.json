@@ -16,8 +16,8 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
-    "@datekit/eslint-config": "*",
-    "@datekit/typescript-config": "*",
+    "@datekit/eslint-config": "workspace:*",
+    "@datekit/typescript-config": "workspace:*",
     "@swc/core": "^1.6.13",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
