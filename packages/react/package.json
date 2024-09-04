@@ -1,5 +1,5 @@
 {
-  "name": "@datekit/core",
+  "name": "@datekit/react",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -9,10 +9,9 @@
   "files": [
     "dist/**"
   ],
-  "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts",
-    "dev": "tsup src/index.ts --watch",
+    "build": "tsup src/index.tsx",
+    "dev": "tsup src/index.tsx --watch",
     "lint": "eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
@@ -20,14 +19,24 @@
     "@datekit/eslint-config": "workspace:*",
     "@datekit/typescript-config": "workspace:*",
     "@swc/core": "^1.6.13",
-    "eslint": "^8.57.0",
+    "@types/react": "^18 || ^19",
+    "@types/react-dom": "^18 || ^19",
+    "eslint": "^8",
     "tsup": "^8.0.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "@datekit/core": "workspace:*",
+    "react": "^18 || ^19"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.1.3",
+    "@heroicons/react": "^2.1.5",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
+    "tailwind-merge": "^2.5.2"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "date-fns": "^3.6.0"
   }
 }
