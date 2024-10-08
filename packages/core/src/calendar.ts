@@ -9,23 +9,24 @@ import {
   type Week,
   type Year,
   type View,
-} from './views';
-import { type CalendarEvent } from './events';
+} from './views'
+import { type DatekitEvent, type DatekitEventSource } from './events'
 
 export interface SelectedState {
-  today: Date;
-  current: Date;
-  day: Day;
-  week: Week;
-  month: Month;
-  year: Year;
+  today: Date
+  current: Date
+  day: Day
+  week: Week
+  month: Month
+  year: Year
 }
 
 export interface CalendarState {
-  view: View;
-  defaultView: View;
-  selected: SelectedState;
-  events: CalendarEvent[];
+  view: View
+  defaultView: View
+  selected: SelectedState
+  events: DatekitEvent[]
+  sources: DatekitEventSource[]
 }
 
 export class Calendar {
@@ -41,54 +42,59 @@ export class Calendar {
       year: [],
     },
     events: [],
-  };
+    sources: [],
+  }
 
   constructor(options: Partial<CalendarState> = {}) {
     console.log('Constructor with options', options)
-    this.state = Object.assign({ ...this.state, ...options });
-    this.refresh();
+    this.state = {
+      ...this.state,
+      ...options,
+      view: options.defaultView ?? this.state.defaultView,
+    }
+    this.refresh()
   }
 
-  addEvent(event: CalendarEvent): void {
-    this.state.events.push(event);
+  addEvent(event: DatekitEvent): void {
+    this.state.events.push(event)
   }
 
   removeEvent(id: string): void {
-    this.state.events = this.state.events.filter((event) => event.id !== id);
+    this.state.events = this.state.events.filter((event) => event.id !== id)
   }
 
-  getEvents(): CalendarEvent[] {
-    return this.state.events;
+  getEvents(): DatekitEvent[] {
+    return this.state.events
   }
 
   setView(view: View): void {
-    this.state.view = view;
-    this.refresh();
+    this.state.view = view
+    this.refresh()
   }
 
   getView(): View {
-    return this.state.view;
+    return this.state.view
   }
 
   setCurrent(date: Date): void {
-    console.log('Setting current date', date);
-    this.state.selected.current = date;
-    this.refresh();
+    console.log('Setting current date', date)
+    this.state.selected.current = date
+    this.refresh()
   }
 
   getCurrent(): Date {
-    return this.state.selected.current;
+    return this.state.selected.current
   }
 
   getState(): CalendarState {
-    return this.state;
+    return this.state
   }
 
   private refresh() {
-    this.state.selected.day = generateActiveDay(this.state.selected.current);
-    this.state.selected.week = generateWeekView(this.state.selected.current);
-    this.state.selected.month = generateMonthView(this.state.selected.current);
-    this.state.selected.year = generateYearView(this.state.selected.current);
-    console.log('Refreshed state', this.state);
+    this.state.selected.day = generateActiveDay(this.state.selected.current)
+    this.state.selected.week = generateWeekView(this.state.selected.current)
+    this.state.selected.month = generateMonthView(this.state.selected.current)
+    this.state.selected.year = generateYearView(this.state.selected.current)
+    console.log('Refreshed state', this.state)
   }
 }

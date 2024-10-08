@@ -1,51 +1,41 @@
-"use client"
+'use client'
 
-import React from 'react';
-import { useDatekit, DatekitProvider } from './DatekitContext';
-import { type CalendarEvent, type View } from '@datekit/core';
-import DayView from './views/DayView';
-import WeekView from './views/WeekView';
-import MonthView from './views/MonthView';
-import YearView from './views/YearView';
-import IntrinsicAttributes = React.JSX.IntrinsicAttributes;
+import React from 'react'
+import { useDatekit, DatekitProvider } from './DatekitContext'
+import { type CalendarEvent, type View } from '@datekit/core'
+import DayView from './views/DayView'
+import WeekView from './views/WeekView'
+import MonthView from './views/MonthView'
+import YearView from './views/YearView'
 
 interface CalendarProps {
-  defaultView?: View;
-  events?: CalendarEvent[];
+  calendar: any
 }
 
-const CalendarComponent: React.FC<CalendarProps & IntrinsicAttributes> = () => {
-  const { view, selected } = useDatekit();
-
-  // useEffect(() => {
-  //   if(events) {
-  //     events.forEach(event => addEvent(event));
-  //   }
-  //
-  //   if(view === undefined) {
-  //     setView(defaultView);
-  //   }
-  // }, [events, defaultView]);
+const CalendarComponent = () => {
+  const { view, selected } = useDatekit()
 
   switch (view) {
     case 'year':
-      return <YearView />;
+      return <YearView />
     case 'month':
-      return <MonthView />;
+      return <MonthView />
     case 'week':
-      return <WeekView />;
+      return <WeekView />
     case 'day':
-      return <DayView />;
+      return <DayView />
     default:
-      return <>
-        <pre>View: {view}</pre>
-        <pre>{selected.current.toISOString()}</pre>
-      </>
+      return (
+        <>
+          <pre>View: {view}</pre>
+          <pre>{selected.current.toISOString()}</pre>
+        </>
+      )
   }
-};
+}
 
-export const Calendar: React.FC<CalendarProps> = (props) => (
-  <DatekitProvider options={{ view: props.defaultView }}>
-    <CalendarComponent {...props} />
+export const Calendar = ({ calendar }: CalendarProps) => (
+  <DatekitProvider calendar={calendar}>
+    <CalendarComponent />
   </DatekitProvider>
-);
+)
