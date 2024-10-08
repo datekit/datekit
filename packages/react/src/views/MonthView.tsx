@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 
 export default function MonthView() {
   const { selected: { current, month } } = useDatekit();
+  const selectedDay = null;
 
   return (
     <div className="lg:flex lg:flex-1 lg:h-full lg:min-h-full lg:flex-col">
