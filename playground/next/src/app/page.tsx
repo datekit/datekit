@@ -6,16 +6,38 @@ export default function Home() {
   const sources = [
     {
       // 1st use-case to support
+      id: '1',
+      name: 'Event 1',
       events: [
         {
-          id: 1,
-          name: 'Event 1',
-          start: '2021-09-01T00:00:00.000Z',
-          end: '2021-09-01T00:00:00.000Z',
+          id: '1',
+          name: 'Dr appointment',
+          start: new Date('Sun Oct 20 2024 13:00:00 GMT-0700'),
+          end: new Date('Sun Oct 20 2024 14:00:00 GMT-0700'),
           metadata: {
-            color: 'red',
-          },
+            description: 'my appointment with Dr.Ticcia'
+          }
         },
+        {
+          id: '2',
+          name: 'Meet Dana',
+          start: new Date('Sun Oct 20 2024 08:20:00 GMT-0700'),
+          end: new Date('Sun Oct 20 2024 11:20:00 GMT-0700'),
+          metadata: {
+            description: 'meet Dana from telus',
+            color: 'red'
+          }
+        },
+        {
+          id: '3',
+          name: 'cooking',
+          start: new Date('Sun Oct 21 2024 11:30:00 GMT-0700'),
+          end: new Date('Sun Oct 21 2024 13:00:00 GMT-0700'),
+          metadata: {
+            description: 'cook pizza',
+            color: 'red'
+          }
+        }
       ],
     },
     // { // 2nd use-case to support
@@ -30,30 +52,26 @@ export default function Home() {
     // },
     {
       // 3rd use-case to support
+      id: '2',
+      name: 'Recurrent Event',
       events: [
         {
-          id: 2,
-          name: 'Recurring event',
-          start: new Date(),
-          end: new Date(),
+          id: '1',
+          name: 'Physio appointment',
+          start: new Date('Sun Oct 20 2024 13:00:00 GMT-0700'),
+          end: new Date('Sun Oct 20 2024 14:00:00 GMT-0700'),
           metadata: {
-            name: 'Recurring event',
-            description: 'This is a recurring event',
-          },
-          // recurrence: 'FREQ=WEEKLY;COUNT=10',
-        },
+            description: 'my weekly appointment with Jackson',
+            color: 'red'
+          }
+        }
       ],
     },
   ]
 
   const calendar = useCalendar({
-    events: sources,
+    sources: sources,
     defaultView: 'month',
-  })
-
-  const cal2 = useCalendar({
-    events: sources,
-    defaultView: 'week',
   })
 
   return (
@@ -62,7 +80,6 @@ export default function Home() {
       suppressHydrationWarning
     >
       <Calendar calendar={calendar} />
-      <Calendar calendar={cal2} />
     </main>
   )
 }

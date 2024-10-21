@@ -4,15 +4,47 @@ import { useDatekit } from '../DatekitContext';
 import Header from '../elements/Header';
 import MiniCalendar from '../MiniCalendar';
 import { useEffect, useRef } from 'react';
-import type { SelectedState } from '@datekit/core';
+import type { DatekitEvent, SelectedState } from '@datekit/core';
 import { format } from 'date-fns';
 import { cn } from '../utils';
 
 export default function DayView() {
-  const { selected: { current, week } } = useDatekit();
+  const { selected: { current, week }, sources } = useDatekit();
   const container: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const containerNav: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const containerOffset: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
+
+  const filterEvents = (events: DatekitEvent[]): DatekitEvent[] => {
+    return events.filter((event) => {
+      return (
+        event.start.getDate() === current.getDate() &&
+        event.start.getMonth() === current.getMonth() &&
+        event.start.getFullYear() === current.getFullYear()
+    )
+   })
+  }
+
+  const calculateGridrRowStartAndSpan = (start: Date, end: Date): {gridRowStart: number, span: number} => {
+    const minutesSinceMidnight = (start.getHours() * 60) + start.getMinutes()
+    const minutesPerRow = 5
+    const gridRowStart = Math.floor(minutesSinceMidnight / minutesPerRow)
+    const startMinutesSinceMidnight = (start.getHours() * 60) + start.getMinutes();
+    const endMinutesSinceMidnight = (end.getHours() * 60) + end.getMinutes()
+    const durationInMinutes = endMinutesSinceMidnight - startMinutesSinceMidnight
+    const span = Math.ceil(durationInMinutes / minutesPerRow)
+    return {gridRowStart, span}
+  }
+
+
+  const formatTime = (date: Date): String => {
+    let ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+    let hours = date.getHours() % 12;
+    hours = hours ? hours : 12;
+    let minutes: String | number = date.getMinutes();
+    minutes = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+
+    return `${hours}:${minutes} ${ampm}`;
+  }
   // useEffect(() => {
   //   // Set the container scroll position based on the current time.
   //   const currentMinute = new Date().getHours() * 60;
@@ -67,7 +99,6 @@ export default function DayView() {
                 className="col-start-1 col-end-2 row-start-1 grid divide-y divide-stone-100 dark:divide-stone-800"
                 style={{ gridTemplateRows: 'repeat(48, minmax(3.5rem, 1fr))' }}
               >
-                <div ref={containerOffset} className="row-end-1 h-7"></div>
                 <div>
                   <div className="sticky left-0 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
                     12AM
@@ -219,43 +250,27 @@ export default function DayView() {
                 className="col-start-1 col-end-2 row-start-1 grid grid-cols-1"
                 style={{ gridTemplateRows: '1.75rem repeat(288, minmax(0, 1fr)) auto' }}
               >
-                <li className="relative mt-px flex" style={{ gridRow: '74 / span 12' }}>
-                  <a
-                    href="#"
-                    className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100"
-                  >
-                    <p className="order-1 font-semibold text-blue-700">Breakfast</p>
-                    <p className="text-blue-500 group-hover:text-blue-700">
-                      <time dateTime="2022-01-22T06:00">6:00 AM</time>
-                    </p>
-                  </a>
-                </li>
-                <li className="relative mt-px flex" style={{ gridRow: '92 / span 30' }}>
-                  <a
-                    href="#"
-                    className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-pink-50 p-2 text-xs leading-5 hover:bg-pink-100"
-                  >
-                    <p className="order-1 font-semibold text-pink-700">Flight to Paris</p>
-                    <p className="order-1 text-pink-500 group-hover:text-pink-700">
-                      John F. Kennedy International Airport
-                    </p>
-                    <p className="text-pink-500 group-hover:text-pink-700">
-                      <time dateTime="2022-01-22T07:30">7:30 AM</time>
-                    </p>
-                  </a>
-                </li>
-                <li className="relative mt-px flex" style={{ gridRow: '134 / span 18' }}>
-                  <a
-                    href="#"
-                    className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-indigo-50 p-2 text-xs leading-5 hover:bg-indigo-100"
-                  >
-                    <p className="order-1 font-semibold text-indigo-700">Sightseeing</p>
-                    <p className="order-1 text-indigo-500 group-hover:text-indigo-700">Eiffel Tower</p>
-                    <p className="text-indigo-500 group-hover:text-indigo-700">
-                      <time dateTime="2022-01-22T11:00">11:00 AM</time>
-                    </p>
-                  </a>
-                </li>
+                {
+                  sources.map((source) => {
+                    return filterEvents(source.events).map((event => {
+                     const {gridRowStart, span} = calculateGridrRowStartAndSpan(event.start, event.end)
+                      return (
+                        <li className="relative mt-px flex" style={{ gridRow: `${gridRowStart} / span ${span}` }}>
+                          <a
+                            href="#"
+                            className={`group absolute inset-1 flex flex-col overflow-y-auto rounded-lg p-2 text-xs leading-5 hover:bg-blue-100 ${event.metadata.color ? `bg-${event.metadata.color}-50` : 'bg-blue-50'}`}
+                          >
+                            <p className="order-1 font-semibold text-blue-700">{event.name}</p>
+                            {event.metadata.description ? <p className="order-1 font-medium py-1 text-slate-700 dark:text-slate-500">{event.metadata.description}</p> : ''}
+                            <p className="text-blue-500 group-hover:text-blue-700">
+                              <time dateTime="2022-01-22T06:00">{formatTime(event.start)}</time>
+                            </p>
+                          </a>
+                        </li>
+                      );
+                    }))
+                  })
+                }
               </ol>
             </div>
           </div>
