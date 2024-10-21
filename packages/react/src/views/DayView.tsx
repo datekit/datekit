@@ -1,10 +1,10 @@
 'use client';
 
 import { useDatekit } from '../DatekitContext';
+import {isSameDay, calculateGridrRowStartAndSpan, formatDate} from '../utils/dateUtils'
 import Header from '../elements/Header';
 import MiniCalendar from '../MiniCalendar';
 import { useEffect, useRef } from 'react';
-import type { DatekitEvent, SelectedState } from '@datekit/core';
 import { format } from 'date-fns';
 import { cn } from '../utils';
 
@@ -14,47 +14,17 @@ export default function DayView() {
   const containerNav: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const containerOffset: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 
-  const filterEvents = (events: DatekitEvent[]): DatekitEvent[] => {
-    return events.filter((event) => {
-      return (
-        event.start.getDate() === current.getDate() &&
-        event.start.getMonth() === current.getMonth() &&
-        event.start.getFullYear() === current.getFullYear()
-    )
-   })
-  }
-
-  const calculateGridrRowStartAndSpan = (start: Date, end: Date): {gridRowStart: number, span: number} => {
-    const minutesSinceMidnight = (start.getHours() * 60) + start.getMinutes()
-    const minutesPerRow = 5
-    const gridRowStart = Math.floor(minutesSinceMidnight / minutesPerRow)
-    const startMinutesSinceMidnight = (start.getHours() * 60) + start.getMinutes();
-    const endMinutesSinceMidnight = (end.getHours() * 60) + end.getMinutes()
-    const durationInMinutes = endMinutesSinceMidnight - startMinutesSinceMidnight
-    const span = Math.ceil(durationInMinutes / minutesPerRow)
-    return {gridRowStart, span}
-  }
-
-
-  const formatTime = (date: Date): String => {
-    let ampm = date.getHours() >= 12 ? 'PM' : 'AM';
-    let hours = date.getHours() % 12;
-    hours = hours ? hours : 12;
-    let minutes: String | number = date.getMinutes();
-    minutes = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
-
-    return `${hours}:${minutes} ${ampm}`;
-  }
-  // useEffect(() => {
-  //   // Set the container scroll position based on the current time.
-  //   const currentMinute = new Date().getHours() * 60;
-  //   if (container.current && containerNav.current && containerOffset.current) {
-  //     container.current.scrollTop =
-  //       ((container.current.scrollHeight - containerNav.current.offsetHeight - containerOffset.current.offsetHeight) *
-  //         currentMinute) /
-  //       1440;
-  //   }
-  // }, []);
+  useEffect(() => {
+    // Set the container scroll position based on the current time.
+    const currentMinute = new Date().getHours() * 60 + + new Date().getMinutes();
+    if (container.current && containerNav.current && containerOffset.current) {
+      container.current.scrollTop =
+        ((container.current.scrollHeight - containerNav.current.offsetHeight - containerOffset.current.offsetHeight) *
+          currentMinute) /
+        1440;
+    }
+    console.log('==== nazanin inside useEffect', containerOffset)
+  }, []);
 
   return (
     <div className="flex flex-col overflow-hidden rounded-xl border-b border-stone-200 dark:border-stone-800">
@@ -93,7 +63,7 @@ export default function DayView() {
           </div>
           <div className="flex w-full flex-auto">
             <div className="w-14 flex-none ring-1 ring-gray-100 dark:ring-stone-800" />
-            <div className="grid flex-auto grid-cols-1 grid-rows-1">
+            <div ref={containerOffset} className="grid flex-auto grid-cols-1 grid-rows-1">
               {/* Horizontal lines */}
               <div
                 className="col-start-1 col-end-2 row-start-1 grid divide-y divide-stone-100 dark:divide-stone-800"
@@ -252,7 +222,7 @@ export default function DayView() {
               >
                 {
                   sources.map((source) => {
-                    return filterEvents(source.events).map((event => {
+                    return isSameDay(source.events, current).map((event => {
                      const {gridRowStart, span} = calculateGridrRowStartAndSpan(event.start, event.end)
                       return (
                         <li className="relative mt-px flex" style={{ gridRow: `${gridRowStart} / span ${span}` }}>
@@ -263,7 +233,7 @@ export default function DayView() {
                             <p className="order-1 font-semibold text-blue-700">{event.name}</p>
                             {event.metadata.description ? <p className="order-1 font-medium py-1 text-slate-700 dark:text-slate-500">{event.metadata.description}</p> : ''}
                             <p className="text-blue-500 group-hover:text-blue-700">
-                              <time dateTime="2022-01-22T06:00">{formatTime(event.start)}</time>
+                              <time dateTime="2022-01-22T06:00">{formatDate(event.start)}</time>
                             </p>
                           </a>
                         </li>
