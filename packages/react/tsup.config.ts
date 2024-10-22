@@ -6,6 +6,7 @@ export default defineConfig({
   },
   treeshake: true,
   format: ["cjs", "esm"],
+  external: ["react"],
   dts: true,
   clean: true
 });

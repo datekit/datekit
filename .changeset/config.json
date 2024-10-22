@@ -5,6 +5,11 @@
   "fixed": [],
   "linked": [],
   "access": "public",
+  "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@datekit/docs"]
+  "ignore": [
+    "@datekit/docs",
+    "@datekit/changelog",
+    "@datekit/playground-next"
+  ]
 }
