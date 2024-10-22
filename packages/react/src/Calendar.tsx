@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { useDatekit, DatekitProvider } from './DatekitContext'
-import { type CalendarEvent, type View } from '@datekit/core'
 import DayView from './views/DayView'
 import WeekView from './views/WeekView'
 import MonthView from './views/MonthView'

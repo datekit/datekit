@@ -1,8 +1,8 @@
 import { createContext, useContext, useRef, useState } from 'react'
-import { CalendarState, CalendarEvent, View } from '@datekit/core'
+import { CalendarState, DatekitEvent, View } from '@datekit/core'
 
 type DatekitContextProps = CalendarState & {
-  addEvent: (event: CalendarEvent) => void
+  addEvent: (event: DatekitEvent) => void
   removeEvent: (id: string) => void
   setView: (view: View) => void
   setCurrent: (date: Date) => void

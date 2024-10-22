@@ -1,5 +1,5 @@
 import {
-  type CalendarEvent,
+  type DatekitEvent,
   type CalendarState,
   type DatekitEventSource,
   type View,
@@ -27,7 +27,7 @@ export function useCalendar(options: UseCalendarProps) {
     updateState()
   }
 
-  const addEvent = (event: CalendarEvent) => {
+  const addEvent = (event: DatekitEvent) => {
     calendarRef.current.addEvent(event)
     updateState()
   }
