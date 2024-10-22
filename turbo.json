@@ -17,6 +17,12 @@
       "cache": false,
       "persistent": true
     },
+    "react#dev": {
+      "dependsOn": ["core#build"]
+    },
+    "playground#dev": {
+      "dependsOn": ["core#build"]
+    },
     "clean": {
       "cache": false
     }
