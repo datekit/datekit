@@ -17,11 +17,11 @@
       "cache": false,
       "persistent": true
     },
-    "react#dev": {
-      "dependsOn": ["core#build"]
+    "@datekit/react#dev": {
+      "dependsOn": ["@datekit/core#build"]
     },
-    "playground#dev": {
-      "dependsOn": ["core#build"]
+    "@datekit/playground#dev": {
+      "dependsOn": ["@datekit/core#build"]
     },
     "clean": {
       "cache": false
