@@ -1,5 +1,7 @@
 import type { DatekitEvent } from './events'
 import {
+  startOfDay,
+  endOfDay,
   startOfMonth,
   endOfMonth,
   startOfWeek,
@@ -7,6 +9,8 @@ import {
   setMonth,
   format,
   isSameDay,
+  startOfYear,
+  endOfYear,
 } from 'date-fns'
 
 export const DAY_VIEW = 'day'
@@ -43,6 +47,32 @@ export function generateActiveDay(date: Date): Day {
   const isSelected = false // Add logic to determine if the day is selected
   const events: any = [] // Add logic to fetch events for the day
   return { date, isToday, isSelected, events }
+}
+
+export function generatePeriodStart(view: View, date: Date): Date {
+  switch (view) {
+    case DAY_VIEW:
+      return startOfDay(date)
+    case WEEK_VIEW:
+      return startOfWeek(date)
+    case MONTH_VIEW:
+      return startOfMonth(date)
+    case YEAR_VIEW:
+      return startOfYear(date)
+  }
+}
+
+export function generatePeriodEnd(view: View, date: Date): Date {
+  switch (view) {
+    case DAY_VIEW:
+      return endOfDay(date)
+    case WEEK_VIEW:
+      return endOfWeek(date)
+    case MONTH_VIEW:
+      return endOfMonth(date)
+    case YEAR_VIEW:
+      return endOfYear(date)
+  }
 }
 
 export function generateWeekView(selectedDate: Date): Week {

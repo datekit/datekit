@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "name": "Annual Company Retreat",
+    "start": "2024-07-15T09:00:00.000Z",
+    "end": "2024-07-17T17:00:00.000Z",
+    "rrule": "DTSTART:20240715T090000Z\nRRULE:FREQ=YEARLY;COUNT=10",
+    "metadata": {
+      "description": "Company-wide retreat and team building",
+      "color": "blue"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Team Standup",
+    "start": "2024-08-01T15:00:00.000Z",
+    "end": "2024-08-01T15:30:00.000Z",
+    "rrule": "DTSTART:20240801T150000Z\nRRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR;UNTIL=20241231T235959Z",
+    "metadata": {
+      "description": "Regular team sync meeting",
+      "color": "green"
+    }
+  },
+  {
+    "id": 3,
+    "name": "Dentist Appointment",
+    "start": "2024-09-12T14:00:00.000Z",
+    "end": "2024-09-12T15:00:00.000Z",
+    "rrule": "DTSTART:20240912T140000Z\nRRULE:FREQ=MONTHLY;INTERVAL=3;COUNT=4",
+    "metadata": {
+      "description": "Regular dental checkup",
+      "color": "red"
+    }
+  },
+  {
+    "id": 4,
+    "name": "Birthday Party",
+    "start": "2024-10-05T18:00:00.000Z",
+    "end": "2024-10-05T22:00:00.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Sarah's birthday celebration",
+      "color": "purple"
+    }
+  },
+  {
+    "id": 5,
+    "name": "Project Review",
+    "start": "2024-11-01T13:00:00.000Z",
+    "end": "2024-11-01T14:30:00.000Z",
+    "rrule": "DTSTART:20241101T130000Z\nRRULE:FREQ=MONTHLY;BYDAY=1FR;UNTIL=20241231T235959Z",
+    "metadata": {
+      "description": "Monthly project status review",
+      "color": "orange"
+    }
+  },
+  {
+    "id": 6,
+    "name": "Yoga Class",
+    "start": "2024-08-05T07:00:00.000Z",
+    "end": "2024-08-05T08:00:00.000Z",
+    "rrule": "DTSTART:20240805T070000Z\nRRULE:FREQ=WEEKLY;BYDAY=MO,WE;UNTIL=20241231T235959Z",
+    "metadata": {
+      "description": "Morning yoga session",
+      "color": "teal"
+    }
+  },
+  {
+    "id": 7,
+    "name": "Client Meeting",
+    "start": "2024-08-15T10:00:00.000Z",
+    "end": "2024-08-15T11:30:00.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Important client presentation",
+      "color": "navy"
+    }
+  },
+  {
+    "id": 8,
+    "name": "Team Building Workshop",
+    "start": "2024-09-20T13:00:00.000Z",
+    "end": "2024-09-20T17:00:00.000Z",
+    "rrule": "DTSTART:20240920T130000Z\nRRULE:FREQ=MONTHLY;BYDAY=3FR;COUNT=6",
+    "metadata": {
+      "description": "Monthly team building activities",
+      "color": "pink"
+    }
+  },
+  {
+    "id": 9,
+    "name": "Product Launch",
+    "start": "2024-12-01T09:00:00.000Z",
+    "end": "2024-12-01T18:00:00.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "New product line launch event",
+      "color": "gold"
+    }
+  },
+  {
+    "id": 10,
+    "name": "Weekly Code Review",
+    "start": "2024-08-06T16:00:00.000Z",
+    "end": "2024-08-06T17:00:00.000Z",
+    "rrule": "DTSTART:20240806T160000Z\nRRULE:FREQ=WEEKLY;BYDAY=TU;UNTIL=20241231T235959Z",
+    "metadata": {
+      "description": "Team code review session",
+      "color": "indigo"
+    }
+  }
+]
