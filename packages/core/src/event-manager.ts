@@ -32,7 +32,7 @@ export class EventManager {
   }): DatekitEvent[] {
     const events = this.getEvents()
 
-    const filteredEvents = events.filter((event) => {
+    return events.filter((event) => {
       const eventStart = event.start
       const eventEnd = event.end
 
@@ -41,9 +41,6 @@ export class EventManager {
         isWithinInterval(eventEnd, { start: startDate, end: endDate })
       )
     })
-
-    console.log('*************************', filteredEvents)
-    return filteredEvents
   }
 
   addEvent(event: DatekitEvent) {

@@ -53,7 +53,7 @@ describe('Calendar', () => {
       } as DatekitEvent<unknown>
 
       calendar.addEvent(event)
-      expect(calendar.getState().events).toEqual([event])
+      expect(calendar.getEvents()).toEqual([event])
     })
 
     it('should remove events', () => {
@@ -66,7 +66,7 @@ describe('Calendar', () => {
 
       calendar.addEvent(event)
       calendar.removeEvent('1')
-      expect(calendar.getState().events).not.toContain(event)
+      expect(calendar.getEvents()).not.toEqual([event])
     })
 
     it('should filter events based on period', () => {

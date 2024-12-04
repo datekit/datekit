@@ -77,9 +77,11 @@ export class Calendar {
   }
 
   addEvent(event: DatekitEvent): void {
-    console.log('*************************', event)
-    console.log('*************************', this.state.period)
     this.eventManager.addEvent(event)
+  }
+
+  getEvents(): DatekitEvent[] {
+    return this.eventManager.getEvents()
   }
 
   removeEvent(id: string): void {
@@ -171,8 +173,6 @@ export class Calendar {
           }
         })
       )
-
-      console.log('State', this.getState())
     }, this.debounceTime)
   }
 
