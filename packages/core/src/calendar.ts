@@ -13,7 +13,8 @@ import {
   generatePeriodEnd,
 } from './views'
 import { type DatekitEvent, type DatekitEventSource } from './events'
-import { isWithinInterval } from 'date-fns'
+import { EventManager } from './event-manager'
+
 export interface SelectedState {
   today: Date
   current: Date
@@ -35,67 +36,54 @@ export interface CalendarState {
   sources: DatekitEventSource[]
 }
 
+export interface CalendarOptions extends Partial<CalendarState> {
+  eventManager?: EventManager
+}
+
 export class Calendar {
   private debounceId: ReturnType<typeof setTimeout> | null = null
   private debounceTime = 0
-  private readonly state: CalendarState = {
-    view: DAY_VIEW,
-    defaultView: DAY_VIEW,
-    selected: {
-      today: new Date(),
-      current: new Date(),
-      day: { date: new Date() },
-      week: [],
-      month: { name: '', days: [] },
-      year: [],
-    },
-    period: {
-      startDate: new Date(),
-      endDate: new Date(),
-    },
-    events: [],
-    sources: [],
-  }
+  private readonly state: CalendarState
+  private eventManager: EventManager
 
-  constructor(options: Partial<CalendarState> = {}) {
-    console.log('Constructor with options', options)
-    this.state = {
-      ...this.state,
-      ...options,
-      view: options.defaultView ?? this.state.defaultView,
+  constructor(options: CalendarOptions = {}) {
+    this.eventManager = options.eventManager ?? new EventManager()
+
+    if (options.events) {
+      this.eventManager.setEvents(options.events)
     }
+
+    this.state = {
+      view: options.defaultView ?? DAY_VIEW,
+      defaultView: options.defaultView ?? DAY_VIEW,
+      selected: {
+        today: new Date(),
+        current: new Date(),
+        day: { date: new Date() },
+        week: [],
+        month: { name: '', days: [] },
+        year: [],
+      },
+      period: {
+        startDate: new Date(),
+        endDate: new Date(),
+      },
+      events: this.eventManager.getEvents(),
+      sources: options.sources ?? [],
+    }
+
     this.refresh()
     this.setPeriod()
   }
 
   addEvent(event: DatekitEvent): void {
-    this.state.events.push(event)
+    console.log('*************************', event)
+    console.log('*************************', this.state.period)
+    this.eventManager.addEvent(event)
   }
 
   removeEvent(id: string): void {
-    this.state.events = this.state.events.filter((event) => event.id !== id)
-  }
-
-  getEvents(): DatekitEvent[] {
-    const filteredEvents = this.state.events
-      .map((event) => ({
-        ...event,
-        start: new Date(event.start),
-        end: new Date(event.end),
-      }))
-      .filter(
-        (event) =>
-          isWithinInterval(event.start, {
-            start: this.state.period.startDate,
-            end: this.state.period.endDate,
-          }) ||
-          isWithinInterval(event.end, {
-            start: this.state.period.startDate,
-            end: this.state.period.endDate,
-          })
-      )
-
-    return filteredEvents
+    this.eventManager.removeEvent(id)
   }
 
   setView(view: View): void {
@@ -143,9 +131,14 @@ export class Calendar {
   }
 
   getState(): CalendarState {
+    console.log('Getting state', this.state.period)
+    console.log(
+      'Events',
+      this.eventManager.getFilteredEvents(this.state.period)
+    )
     return {
       ...this.state,
-      events: this.getEvents(),
+      events: this.eventManager.getFilteredEvents(this.state.period),
     }
   }
 
@@ -157,7 +150,6 @@ export class Calendar {
     this.debounceId = setTimeout(async () => {
       if (!this.state) return
 
-      const dateEvents: DatekitEvent[] = []
       await Promise.all(
         this.state.sources.map(async (source: { events: Function | any[] }) => {
           if (typeof source.events === 'function') {
@@ -168,20 +160,17 @@ export class Calendar {
               },
               (events: any[]) => {
                 console.log('Events fetched', events)
-                dateEvents.push(...events)
+                this.eventManager.setEvents(events)
               },
               (error: Error) => {
                 console.error('Error fetching events', error)
               }
             )
           } else {
-            dateEvents.push(...source.events)
+            this.eventManager.setEvents(source.events)
           }
         })
       )
-
-      console.log('Events', dateEvents)
-      this.state.events = dateEvents
 
       console.log('State', this.getState())
     }, this.debounceTime)
