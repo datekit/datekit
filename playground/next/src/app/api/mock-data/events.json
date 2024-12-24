@@ -108,5 +108,93 @@
       "description": "Team code review session",
       "color": "indigo"
     }
+  },
+  {
+    "id": 11,
+    "name": "Halloween Office Party",
+    "start": "2024-10-31T19:00:00.000Z",
+    "end": "2024-10-31T23:00:00.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Annual Halloween celebration",
+      "color": "orange"
+    }
+  },
+  {
+    "id": 12,
+    "name": "Q4 Planning Meeting",
+    "start": "2024-10-15T10:00:00.000Z",
+    "end": "2024-10-15T16:00:00.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Quarterly planning session",
+      "color": "blue"
+    }
+  },
+  {
+    "id": 13,
+    "name": "Thanksgiving Break",
+    "start": "2024-11-28T00:00:00.000Z",
+    "end": "2024-11-29T23:59:59.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Office closed for Thanksgiving",
+      "color": "brown"
+    }
+  },
+  {
+    "id": 14,
+    "name": "Tech Conference",
+    "start": "2024-11-15T09:00:00.000Z",
+    "end": "2024-11-17T18:00:00.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Annual technology conference",
+      "color": "cyan"
+    }
+  },
+  {
+    "id": 15,
+    "name": "Holiday Party",
+    "start": "2024-12-20T18:00:00.000Z",
+    "end": "2024-12-20T23:00:00.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Company holiday celebration",
+      "color": "red"
+    }
+  },
+  {
+    "id": 16,
+    "name": "Year-End Review",
+    "start": "2024-12-15T13:00:00.000Z",
+    "end": "2024-12-15T17:00:00.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Annual performance reviews",
+      "color": "gray"
+    }
+  },
+  {
+    "id": 17,
+    "name": "Christmas Eve Holiday",
+    "start": "2024-12-24T00:00:00.000Z",
+    "end": "2024-12-24T23:59:59.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Office closed for Christmas Eve",
+      "color": "green"
+    }
+  },
+  {
+    "id": 18,
+    "name": "Christmas Day Holiday",
+    "start": "2024-12-25T00:00:00.000Z",
+    "end": "2024-12-25T23:59:59.000Z",
+    "rrule": null,
+    "metadata": {
+      "description": "Office closed for Christmas Day",
+      "color": "red"
+    }
   }
 ]

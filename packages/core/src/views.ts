@@ -1,3 +1,4 @@
+import type { EventManager } from './event-manager'
 import type { DatekitEvent } from './events'
 import {
   startOfDay,
@@ -104,7 +105,10 @@ export function generateWeekView(selectedDate: Date): Week {
   return days
 }
 
-export function generateMonthView(selectedDate: Date): Month {
+export function generateMonthView(
+  selectedDate: Date,
+  eventManager: EventManager
+): Month {
   const today = new Date()
   const selected = new Date(selectedDate)
 
@@ -126,7 +130,11 @@ export function generateMonthView(selectedDate: Date): Month {
     const isCurrentMonth = date.getMonth() === selected.getMonth()
     const isToday = isSameDay(date, today)
     const isSelected = isSameDay(date, selected) // Add logic to determine if the day is selected
-    const events: any = [] // Add logic to fetch events for the day
+    const events = eventManager.getFilteredEvents({
+      startDate: startOfDay(date),
+      endDate: endOfDay(date),
+    })
+
     days.push({
       date: new Date(date),
       isCurrentMonth,

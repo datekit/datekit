@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { useDatekit, DatekitProvider } from './DatekitContext'
 import DayView from './views/DayView'
 import WeekView from './views/WeekView'

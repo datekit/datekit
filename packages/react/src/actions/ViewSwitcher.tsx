@@ -1,19 +1,21 @@
-"use client"
+'use client'
 
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import type { View } from '@datekit/core';
-import type { MouseEventHandler } from 'react';
-import { useDatekit } from '../DatekitContext';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import type { View } from '@datekit/core'
+import type { MouseEventHandler } from 'react'
+import { useDatekit } from '../DatekitContext'
 
 export default function ViewSwitcher({}) {
-  const { view, setView } = useDatekit();
+  const { view, setView } = useDatekit()
 
-  const setViewHandler = (view: View): MouseEventHandler<HTMLAnchorElement> => (event) => {
-    console.debug('Calling view switcher', view);
-    event.preventDefault();
-    setView(view);
-  };
+  const setViewHandler =
+    (view: View): MouseEventHandler<HTMLAnchorElement> =>
+    (event) => {
+      console.debug('Calling view switcher', view)
+      event.preventDefault()
+      setView(view)
+    }
 
   return (
     <Menu as="div" className="relative">
@@ -21,8 +23,13 @@ export default function ViewSwitcher({}) {
         type="button"
         className="flex items-center gap-x-1.5 rounded-md bg-white dark:bg-stone-900 px-3 py-2 text-sm font-semibold text-stone-900 dark:text-white shadow-sm ring-1 ring-inset ring-stone-200 dark:ring-stone-800 hover:bg-stone-50 dark:hover:bg-stone-700 dark:focus:ring-stone-600"
       >
-        <span><span className="capitalize">{view}</span> view</span>
-        <ChevronDownIcon className="-mr-1 h-5 w-5 text-stone-400" aria-hidden="true" />
+        <span>
+          <span className="capitalize">{view}</span> view
+        </span>
+        <ChevronDownIcon
+          className="-mr-1 h-5 w-5 text-stone-400"
+          aria-hidden="true"
+        />
       </MenuButton>
 
       <MenuItems
@@ -69,5 +76,5 @@ export default function ViewSwitcher({}) {
         </div>
       </MenuItems>
     </Menu>
-  );
+  )
 }

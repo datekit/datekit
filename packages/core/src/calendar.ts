@@ -14,6 +14,17 @@ import {
 } from './views'
 import { type DatekitEvent, type DatekitEventSource } from './events'
 import { EventManager } from './event-manager'
+import { EventBus } from './event-bus'
+import {
+  addDays,
+  addMonths,
+  addWeeks,
+  addYears,
+  subDays,
+  subMonths,
+  subWeeks,
+  subYears,
+} from 'date-fns'
 
 export interface SelectedState {
   today: Date
@@ -26,6 +37,7 @@ export interface SelectedState {
 
 export interface CalendarState {
   view: View
+  isLoading: boolean
   defaultView: View
   selected: SelectedState
   period: {
@@ -45,9 +57,11 @@ export class Calendar {
   private debounceTime = 0
   private readonly state: CalendarState
   private eventManager: EventManager
+  private eventBus: EventBus
 
   constructor(options: CalendarOptions = {}) {
     this.eventManager = options.eventManager ?? new EventManager()
+    this.eventBus = new EventBus()
 
     if (options.events) {
       this.eventManager.setEvents(options.events)
@@ -56,6 +70,7 @@ export class Calendar {
     this.state = {
       view: options.defaultView ?? DAY_VIEW,
       defaultView: options.defaultView ?? DAY_VIEW,
+      isLoading: false,
       selected: {
         today: new Date(),
         current: new Date(),
@@ -72,8 +87,54 @@ export class Calendar {
       sources: options.sources ?? [],
     }
 
-    this.refresh()
     this.setPeriod()
+    this.refresh()
+  }
+
+  on(name: string, callback: () => void) {
+    return this.eventBus.on(name, callback)
+  }
+
+  setToday() {
+    this.setCurrent(new Date())
+  }
+
+  setPrevious() {
+    switch (this.state.view) {
+      case 'day':
+        this.setCurrent(subDays(this.state.selected.current, 1))
+        break
+      case 'week':
+        this.setCurrent(subWeeks(this.state.selected.current, 1))
+        break
+      case 'month':
+        this.setCurrent(subMonths(this.state.selected.current, 1))
+        break
+      case 'year':
+        this.setCurrent(subYears(this.state.selected.current, 1))
+        break
+      default:
+        break
+    }
+  }
+
+  setNext() {
+    switch (this.state.view) {
+      case 'day':
+        this.setCurrent(addDays(this.state.selected.current, 1))
+        break
+      case 'week':
+        this.setCurrent(addWeeks(this.state.selected.current, 1))
+        break
+      case 'month':
+        this.setCurrent(addMonths(this.state.selected.current, 1))
+        break
+      case 'year':
+        this.setCurrent(addYears(this.state.selected.current, 1))
+        break
+      default:
+        break
+    }
   }
 
   addEvent(event: DatekitEvent): void {
@@ -97,20 +158,14 @@ export class Calendar {
     return this.state.view
   }
 
-  async setCurrent(date: Date): Promise<void> {
-    console.log('Setting current date', date)
+  setCurrent(date: Date): void {
     this.state.selected.current = date
-    await this.refreshCalendar()
+    this.refreshCalendar()
   }
 
-  async refreshCalendar(): Promise<void> {
+  refreshCalendar(): void {
     this.setPeriod()
-    this.refresh()
-    console.log('Refreshing sources')
-    await this.refreshSources()
-    console.log('Sources refreshed')
-
-    console.log('Calendar refreshed', this.state)
+    this.refreshSources()
   }
 
   setPeriod(): void {
@@ -133,11 +188,6 @@ export class Calendar {
   }
 
   getState(): CalendarState {
-    console.log('Getting state', this.state.period)
-    console.log(
-      'Events',
-      this.eventManager.getFilteredEvents(this.state.period)
-    )
     return {
       ...this.state,
       events: this.eventManager.getFilteredEvents(this.state.period),
@@ -150,37 +200,52 @@ export class Calendar {
     }
 
     this.debounceId = setTimeout(async () => {
-      if (!this.state) return
+      this.state.isLoading = true
 
-      await Promise.all(
-        this.state.sources.map(async (source: { events: Function | any[] }) => {
-          if (typeof source.events === 'function') {
-            return source.events(
-              {
-                startDate: this.state.period.startDate,
-                endDate: this.state.period.endDate,
-              },
-              (events: any[]) => {
-                console.log('Events fetched', events)
-                this.eventManager.setEvents(events)
-              },
-              (error: Error) => {
-                console.error('Error fetching events', error)
-              }
-            )
-          } else {
-            this.eventManager.setEvents(source.events)
-          }
-        })
-      )
+      try {
+        await Promise.all(
+          this.state.sources.map((source: any) => {
+            if (typeof source.events === 'function') {
+              return new Promise((resolve, reject) => {
+                source.events(
+                  {
+                    startDate: this.state.period.startDate,
+                    endDate: this.state.period.endDate,
+                  },
+                  (events: DatekitEvent[]) => {
+                    this.eventManager.setEvents(events)
+                    resolve(events)
+                  },
+                  (error: Error) => {
+                    console.error('Error fetching events:', error)
+                    reject(error)
+                  }
+                )
+              })
+            } else {
+              this.eventManager.setEvents(source.events)
+              return Promise.resolve()
+            }
+          })
+        )
+      } catch (error) {
+        console.error('Error fetching events:', error)
+      } finally {
+        this.state.isLoading = false
+        this.refresh()
+      }
     }, this.debounceTime)
   }
 
   private refresh() {
     this.state.selected.day = generateActiveDay(this.state.selected.current)
     this.state.selected.week = generateWeekView(this.state.selected.current)
-    this.state.selected.month = generateMonthView(this.state.selected.current)
+    this.state.selected.month = generateMonthView(
+      this.state.selected.current,
+      this.eventManager
+    )
     this.state.selected.year = generateYearView(this.state.selected.current)
-    console.log('Refreshed state', this.state)
+
+    this.eventBus.emit('refresh')
   }
 }

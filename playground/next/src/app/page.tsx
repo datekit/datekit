@@ -27,14 +27,15 @@ export default function Home() {
     defaultView: 'month',
   })
 
-  console.log(calendar)
-
   return (
     <main
       className="p-12 w-full h-full min-h-screen md:max-h-screen flex flex-col"
       suppressHydrationWarning
     >
       <Calendar calendar={calendar} />
+      <button className="text-white" onClick={() => calendar.setView('month')}>
+        Month
+      </button>
     </main>
   )
 }

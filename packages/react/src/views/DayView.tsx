@@ -1,17 +1,12 @@
 'use client'
 
 import { useDatekit } from '../DatekitContext'
-import {
-  isSameDay,
-  calculateGridrRowStartAndSpan,
-  formatDate,
-} from '../utils/dateUtils'
+import { calculateGridrRowStartAndSpan, formatDate } from '../utils/dateUtils'
 import Header from '../elements/Header'
 import MiniCalendar from '../MiniCalendar'
 import { useEffect, useRef } from 'react'
 import { format } from 'date-fns'
 import { cn } from '../utils'
-import { DatekitEvent } from '@datekit/core'
 
 export default function DayView() {
   const {
@@ -35,7 +30,6 @@ export default function DayView() {
           currentMinute) /
         1440
     }
-    console.log('==== nazanin inside useEffect', containerOffset)
   }, [])
 
   return (

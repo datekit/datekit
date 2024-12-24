@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import events from '../mock-data/events.json'
 
 export async function GET(request: NextRequest) {
-  console.log('Fetching events')
   const query = request.nextUrl.searchParams
   const startDate = query.get('startDate')
   const endDate = query.get('endDate')
