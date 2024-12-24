@@ -91,6 +91,10 @@ export class Calendar {
     this.refresh()
   }
 
+  initialize() {
+    this.refreshSources()
+  }
+
   on(name: string, callback: () => void) {
     return this.eventBus.on(name, callback)
   }

@@ -24,6 +24,7 @@ export function useCalendar(options: UseCalendarProps) {
   }
 
   useEffect(() => {
+    calendarRef.current.initialize()
     const unsubscribe = calendarRef.current.on('refresh', () => {
       console.log('+++++++++++++++++ refreshed')
       updateState()
