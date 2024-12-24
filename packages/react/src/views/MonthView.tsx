@@ -1,26 +1,29 @@
-'use client';
+'use client'
 
-import { ClockIcon } from '@heroicons/react/20/solid';
-import { cn } from '../utils';
-import { useDatekit } from '../DatekitContext';
-import Header from '../elements/Header';
-import { format } from 'date-fns';
+import { ClockIcon } from '@heroicons/react/20/solid'
+import { cn } from '../utils'
+import { useDatekit } from '../DatekitContext'
+import Header from '../elements/Header'
+import { format } from 'date-fns'
 
 export default function MonthView() {
-  const { selected: { current, month } } = useDatekit();
-  const selectedDay = null;
+  const {
+    selected: { current, month },
+  } = useDatekit()
+
+  const selectedDay = null
 
   return (
     <div className="lg:flex lg:flex-1 lg:h-full lg:min-h-full lg:flex-col">
       <Header>
         <h1 className="text-base font-semibold leading-6 text-stone-900 dark:text-white">
-          <time dateTime={format(current, 'MM-yyyy')}>{format(current, 'MMMM yyyy')}</time>
+          <time dateTime={format(current, 'MM-yyyy')}>
+            {format(current, 'MMMM yyyy')}
+          </time>
         </h1>
       </Header>
       <div className="overflow-hidden rounded-xl ring-1 ring-stone-200 dark:ring-stone-800 ring-opacity-5 lg:flex lg:flex-auto lg:flex-col lg:flex-1 lg:min-h-full">
-        <header
-          className="grid grid-cols-7 gap-px text-center bg-stone-100 dark:bg-stone-800 text-xs border-b border-stone-200 dark:border-stone-800 font-semibold leading-6 lg:flex-none text-stone-500 dark:text-stone-400 uppercase"
-        >
+        <header className="grid grid-cols-7 gap-px text-center bg-stone-100 dark:bg-stone-800 text-xs border-b border-stone-200 dark:border-stone-800 font-semibold leading-6 lg:flex-none text-stone-500 dark:text-stone-400 uppercase">
           <div className="py-2">
             S<span className="sr-only sm:not-sr-only">un</span>
           </div>
@@ -49,15 +52,18 @@ export default function MonthView() {
               <div
                 key={day.date}
                 className={cn(
-                  day.isCurrentMonth ? 'bg-white dark:bg-stone-900' : 'bg-stone-50 dark:bg-stone-950 text-stone-500',
-                  'relative px-3 py-2 min-h-32',
+                  day.isCurrentMonth
+                    ? 'bg-white dark:bg-stone-900'
+                    : 'bg-stone-50 dark:bg-stone-950 text-stone-500',
+                  'relative px-3 py-2 min-h-32'
                 )}
               >
                 <time
                   dateTime={day.date}
-                  className={
-                    cn('flex h-6 w-6 items-center justify-center rounded-full font-semibold', day.isToday && 'bg-indigo-600 text-white')
-                  }
+                  className={cn(
+                    'flex h-6 w-6 items-center justify-center rounded-full font-semibold',
+                    day.isToday && 'bg-indigo-600 text-white'
+                  )}
                 >
                   {day.date.getDate()}
                 </time>
@@ -66,9 +72,7 @@ export default function MonthView() {
                     {day.events.slice(0, 2).map((event) => (
                       <li key={event.id}>
                         <a href={event.href} className="group flex">
-                          <p
-                            className="flex-auto truncate font-medium text-stone-900 dark:text-stone-50 group-hover:text-indigo-600 dark:group-hover:text-indigo-300"
-                          >
+                          <p className="flex-auto truncate font-medium text-stone-900 dark:text-stone-50 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
                             {event.name}
                           </p>
                           <time
@@ -80,7 +84,11 @@ export default function MonthView() {
                         </a>
                       </li>
                     ))}
-                    {day.events.length > 2 && <li className="text-stone-500">+ {day.events.length - 2} more</li>}
+                    {day.events.length > 2 && (
+                      <li className="text-stone-500">
+                        + {day.events.length - 2} more
+                      </li>
+                    )}
                   </ol>
                 )}
               </div>
@@ -92,22 +100,31 @@ export default function MonthView() {
                 key={day.date}
                 type="button"
                 className={cn(
-                  day.isCurrentMonth ? 'bg-white dark:bg-stone-900' : 'bg-stone-50 dark:bg-stone-900',
+                  day.isCurrentMonth
+                    ? 'bg-white dark:bg-stone-900'
+                    : 'bg-stone-50 dark:bg-stone-900',
                   (day.isSelected || day.isToday) && 'font-semibold',
                   day.isSelected && 'text-white',
                   !day.isSelected && day.isToday && 'text-indigo-600',
-                  !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-stone-900',
-                  !day.isSelected && !day.isCurrentMonth && !day.isToday && 'text-stone-500',
-                  'flex h-14 flex-col px-3 py-2 hover:bg-stone-100 focus:z-10',
+                  !day.isSelected &&
+                    day.isCurrentMonth &&
+                    !day.isToday &&
+                    'text-stone-900',
+                  !day.isSelected &&
+                    !day.isCurrentMonth &&
+                    !day.isToday &&
+                    'text-stone-500',
+                  'flex h-14 flex-col px-3 py-2 hover:bg-stone-100 focus:z-10'
                 )}
               >
                 <time
                   dateTime={day.date}
                   className={cn(
-                    day.isSelected && 'flex h-6 w-6 items-center justify-center rounded-full',
+                    day.isSelected &&
+                      'flex h-6 w-6 items-center justify-center rounded-full',
                     day.isSelected && day.isToday && 'bg-indigo-600',
                     day.isSelected && !day.isToday && 'bg-stone-900',
-                    'ml-auto',
+                    'ml-auto'
                   )}
                 >
                   {day.date.toISOString()}
@@ -116,7 +133,10 @@ export default function MonthView() {
                 {day.events.length > 0 && (
                   <span className="-mx-0.5 mt-auto flex flex-wrap-reverse">
                     {day.events.map((event) => (
-                      <span key={event.id} className="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-stone-400" />
+                      <span
+                        key={event.id}
+                        className="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-stone-400"
+                      />
                     ))}
                   </span>
                 )}
@@ -127,15 +147,22 @@ export default function MonthView() {
       </div>
       {selectedDay && selectedDay?.events.length > 0 && (
         <div className="px-4 py-10 sm:px-6 lg:hidden">
-          <ol
-            className="divide-y divide-stone-100 dark:divide-stone-700 overflow-hidden rounded-lg bg-white dark:bg-stone-800 text-sm ring-1 ring-black dark:ring-white ring-opacity-5"
-          >
+          <ol className="divide-y divide-stone-100 dark:divide-stone-700 overflow-hidden rounded-lg bg-white dark:bg-stone-800 text-sm ring-1 ring-black dark:ring-white ring-opacity-5">
             {selectedDay.events.map((event) => (
-              <li key={event.id} className="group flex p-4 pr-6 focus-within:bg-stone-50 hover:bg-stone-50">
+              <li
+                key={event.id}
+                className="group flex p-4 pr-6 focus-within:bg-stone-50 hover:bg-stone-50"
+              >
                 <div className="flex-auto">
                   <p className="font-semibold text-stone-900">{event.name}</p>
-                  <time dateTime={event.datetime} className="mt-2 flex items-center text-stone-700">
-                    <ClockIcon className="mr-2 h-5 w-5 text-stone-400" aria-hidden="true" />
+                  <time
+                    dateTime={event.datetime}
+                    className="mt-2 flex items-center text-stone-700"
+                  >
+                    <ClockIcon
+                      className="mr-2 h-5 w-5 text-stone-400"
+                      aria-hidden="true"
+                    />
                     {event.time}
                   </time>
                 </div>
@@ -151,5 +178,5 @@ export default function MonthView() {
         </div>
       )}
     </div>
-  );
+  )
 }

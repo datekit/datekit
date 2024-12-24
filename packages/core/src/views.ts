@@ -1,5 +1,8 @@
+import type { EventManager } from './event-manager'
 import type { DatekitEvent } from './events'
 import {
+  startOfDay,
+  endOfDay,
   startOfMonth,
   endOfMonth,
   startOfWeek,
@@ -7,6 +10,8 @@ import {
   setMonth,
   format,
   isSameDay,
+  startOfYear,
+  endOfYear,
 } from 'date-fns'
 
 export const DAY_VIEW = 'day'
@@ -45,6 +50,32 @@ export function generateActiveDay(date: Date): Day {
   return { date, isToday, isSelected, events }
 }
 
+export function generatePeriodStart(view: View, date: Date): Date {
+  switch (view) {
+    case DAY_VIEW:
+      return startOfDay(date)
+    case WEEK_VIEW:
+      return startOfWeek(date)
+    case MONTH_VIEW:
+      return startOfMonth(date)
+    case YEAR_VIEW:
+      return startOfYear(date)
+  }
+}
+
+export function generatePeriodEnd(view: View, date: Date): Date {
+  switch (view) {
+    case DAY_VIEW:
+      return endOfDay(date)
+    case WEEK_VIEW:
+      return endOfWeek(date)
+    case MONTH_VIEW:
+      return endOfMonth(date)
+    case YEAR_VIEW:
+      return endOfYear(date)
+  }
+}
+
 export function generateWeekView(selectedDate: Date): Week {
   const today = new Date()
   const days = []
@@ -74,7 +105,10 @@ export function generateWeekView(selectedDate: Date): Week {
   return days
 }
 
-export function generateMonthView(selectedDate: Date): Month {
+export function generateMonthView(
+  selectedDate: Date,
+  eventManager: EventManager
+): Month {
   const today = new Date()
   const selected = new Date(selectedDate)
 
@@ -96,7 +130,11 @@ export function generateMonthView(selectedDate: Date): Month {
     const isCurrentMonth = date.getMonth() === selected.getMonth()
     const isToday = isSameDay(date, today)
     const isSelected = isSameDay(date, selected) // Add logic to determine if the day is selected
-    const events: any = [] // Add logic to fetch events for the day
+    const events = eventManager.getFilteredEvents({
+      startDate: startOfDay(date),
+      endDate: endOfDay(date),
+    })
+
     days.push({
       date: new Date(date),
       isCurrentMonth,

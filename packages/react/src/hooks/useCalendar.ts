@@ -5,7 +5,7 @@ import {
   type View,
   Calendar,
 } from '@datekit/core'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface UseCalendarProps {
   sources: DatekitEventSource[]
@@ -19,8 +19,21 @@ export function useCalendar(options: UseCalendarProps) {
   )
 
   const updateState = () => {
+    console.log('+++++++++++++++++ updateState')
     setState({ ...calendarRef.current.getState() })
   }
+
+  useEffect(() => {
+    calendarRef.current.initialize()
+    const unsubscribe = calendarRef.current.on('refresh', () => {
+      console.log('+++++++++++++++++ refreshed')
+      updateState()
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [])
 
   const setView = (view: View) => {
     calendarRef.current.setView(view)
@@ -42,11 +55,29 @@ export function useCalendar(options: UseCalendarProps) {
     updateState()
   }
 
+  const setPrevious = () => {
+    calendarRef.current.setPrevious()
+    updateState()
+  }
+
+  const setNext = () => {
+    calendarRef.current.setNext()
+    updateState()
+  }
+
+  const setToday = () => {
+    calendarRef.current.setToday()
+    updateState()
+  }
+
   return {
     ...state,
     setView,
     addEvent,
     removeEvent,
     setCurrent,
+    setPrevious,
+    setNext,
+    setToday,
   }
 }
